@@ -2,10 +2,15 @@ import { User } from "../models/user";
 import Bcrypt from 'bcrypt'
 import * as MongoDbConnector from "../db/mongoDbConnector";
 
-export const findAll = async () => {
-    const users = (await MongoDbConnector.getCollection('users')).find({}).toArray()
-    // TODO: convert to user objects
-    return users
+export const findAll = async (): Promise<User[]> => {
+    const usersCol = await MongoDbConnector.getCollection('users')
+    const users = await usersCol.find({}).toArray()
+    let userList: User[] = []
+    users.forEach(u => {
+        userList.push(mapToUser(u))
+    })
+
+    return userList
 }
 
 export const find = async (id: number): Promise<any> => {
