@@ -7,6 +7,9 @@
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
     "test": "jest"
   },
+  "jest": {
+    "collectCoverage": true
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
