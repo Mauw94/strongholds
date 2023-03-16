@@ -1,0 +1,11 @@
+make holds (rooms) that users can join
+fight other holds
+defend
+buy
+sell
+build
+explore
+add money (gold)
+
+* when signing in the token is filled
+* unit tests

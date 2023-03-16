@@ -1,0 +1,6 @@
+curl -X POST -H 'Content-Type: application/json' -d '{
+  "password": "sdhj",
+  "email": "asdasde@test.com",
+  "name": "test_user_update",
+  "token": ""
+}' http://localhost:7000/api/users -i
