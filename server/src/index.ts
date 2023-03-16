@@ -6,7 +6,6 @@ import morgan from 'morgan'
 import { usersRouter } from './routers/users.router'
 import { ErrorHandler } from "./middleware/error.middleware"
 import { NotFoundHandler } from "./middleware/not-found.middleware"
-import mongoose from 'mongoose'
 
 let port: number = 0
 const app = express()
@@ -18,12 +17,6 @@ if (!process.env.PORT) {
 } else {
     port = parseInt(process.env.PORT as string, 10)
 }
-
-// TODO: not local mongodb setup yet
-mongoose.connect('mongodb://localhost/strongholds')
-    .then(() => {
-        console.log('mongodb connected')
-    }).catch((err) => console.error(err))
 
 app.use(helmet())
 app.use(morgan('combined'))

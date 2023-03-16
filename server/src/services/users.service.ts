@@ -1,35 +1,24 @@
-import { User, Users } from "../models/user";
+import { User } from "../models/user";
 import Bcrypt from 'bcrypt'
+import * as MongoDbConnector from "../db/mongoDbConnector";
 
-let users: Users = {
-    1: {
-        id: 1,
-        name: "test",
-        email: "abc@mail.com",
-        password: "test123",
-        token: ""
-    },
-    2: {
-        id: 2,
-        name: "test2",
-        email: "abc2@mail.com",
-        password: "test123",
-        token: ""
-    },
-    3: {
-        id: 3,
-        name: "test3",
-        email: "abc3@mail.com",
-        password: "test123",
-        token: ""
-    },
+export const findAll = async () => {
+    const users = (await MongoDbConnector.getCollection('users')).find({}).toArray()
+    // TODO: convert to user objects
+    return users
 }
 
-export const findAll = async (): Promise<User[]> => Object.values(users)
+export const find = async (id: number): Promise<any> => {
+    const usersCol = await MongoDbConnector.getCollection('users')
+    const user = await usersCol.findOne({ id: id })
+    console.log(user)
 
-export const find = async (id: number): Promise<User> => users[id]
+    return mapToUser(user)
+}
 
 export const create = async (newUser: User): Promise<User> => {
+    const usersCol = (await MongoDbConnector.getCollection('users'))
+
     const id = Date.now().valueOf()
     const salt = Bcrypt.genSaltSync(10)
     const hash = await Bcrypt.hash(newUser.password, salt)
@@ -37,27 +26,37 @@ export const create = async (newUser: User): Promise<User> => {
     newUser.password = hash
     newUser.id = id
 
-    users[id] = {
-        ...newUser,
-    };
+    await usersCol.insertOne(newUser)
 
-    return users[id]
+    return newUser
 }
 
 export const update = async (id: number, userUpdate: User): Promise<User | null> => {
-    const user = await find(id)
+    const usersCol = await MongoDbConnector.getCollection('users')
+    const user = await usersCol.findOne({ id: id })
 
     if (!user) return null
 
-    users[id] = { ...userUpdate }
+    usersCol.updateOne({ id: id }, userUpdate)
 
-    return users[id]
+    return mapToUser(user)
 }
 
 export const remove = async (id: number): Promise<null | void> => {
-    const user = await find(id)
+    const usersCol = await MongoDbConnector.getCollection('users')
+    const user = await usersCol.findOne({ id: id })
 
     if (!user) return null
 
-    delete users[id]
+    usersCol.deleteOne({ id: id })
+}
+
+const mapToUser = (data: any): User => {
+    return {
+        id: data.id,
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        token: data.token
+    }
 }
