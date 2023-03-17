@@ -5,6 +5,7 @@ import * as MongoDbConnector from "../db/mongoDbConnector";
 export const findAll = async (): Promise<User[]> => {
     const usersCol = await MongoDbConnector.getCollection('users')
     const users = await usersCol.find({}).toArray()
+
     let userList: User[] = []
     users.forEach(u => {
         userList.push(mapToUser(u))
@@ -16,13 +17,12 @@ export const findAll = async (): Promise<User[]> => {
 export const find = async (id: number): Promise<any> => {
     const usersCol = await MongoDbConnector.getCollection('users')
     const user = await usersCol.findOne({ id: id })
-    console.log(user)
 
     return mapToUser(user)
 }
 
 export const create = async (newUser: User): Promise<User> => {
-    const usersCol = (await MongoDbConnector.getCollection('users'))
+    const usersCol = await MongoDbConnector.getCollection('users')
 
     const id = Date.now().valueOf()
     const salt = Bcrypt.genSaltSync(10)
@@ -42,7 +42,7 @@ export const update = async (id: number, userUpdate: User): Promise<User | null>
 
     if (!user) return null
 
-    usersCol.updateOne({ id: id }, userUpdate)
+    await usersCol.updateOne({ id: id }, userUpdate)
 
     return mapToUser(user)
 }
@@ -53,7 +53,7 @@ export const remove = async (id: number): Promise<null | void> => {
 
     if (!user) return null
 
-    usersCol.deleteOne({ id: id })
+    await usersCol.deleteOne({ id: id })
 }
 
 const mapToUser = (data: any): User => {
