@@ -5,11 +5,9 @@ import { UserService } from '../services/users.service'
 export const usersRouter = express.Router()
 
 usersRouter.get('/', async (req: Request, res: Response) => {
-    console.log('getting users')
     try {
         const userService = new UserService()
         const users: User[] = await userService.findAll()
-        // const users: User[] = await UserService.findAll()
 
         res.status(200).send(users)
     }
@@ -35,8 +33,6 @@ usersRouter.get('/:id', async (req: Request, res: Response) => {
 })
 
 usersRouter.post('/', async (req: Request, res: Response) => {
-    console.log(req)
-
     try {
         const user: User = req.body
         user.id = Date.now().valueOf()
@@ -74,7 +70,6 @@ usersRouter.delete('/:id', async (req: Request, res: Response) => {
     try {
         const userService = new UserService()
         const id: number = parseInt(req.params.id, 10)
-        console.log(id)
         await userService.remove(id)
 
         res.sendStatus(204)

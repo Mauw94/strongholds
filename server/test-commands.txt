@@ -14,3 +14,11 @@ curl -X PUT -H 'Content-Type: application/json' -d '{
 }' http://localhost:7000/api/users/1679585638873 -i
 
 curl -X DELETE http://localhost:7000/api/users/1679585638873 -i
+
+
+curl -X POST -H 'Content-Type: application/json' -d '{
+  "name": "room1",
+  "users": []
+}' http://localhost:7000/api/rooms -i
+
+curl -X POST http://localhost:7000/api/rooms/addUser -i

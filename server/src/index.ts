@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import { usersRouter } from './routers/users.router'
 import { ErrorHandler } from "./middleware/error.middleware"
 import { NotFoundHandler } from "./middleware/not-found.middleware"
+import { roomsRouter } from "./routers/rooms.router"
 
 let port: number = 0
 const app = express()
@@ -23,6 +24,7 @@ app.use(morgan('combined'))
 app.use(cors())
 app.use(express.json())
 app.use('/api/users', usersRouter)
+app.use('/api/rooms', roomsRouter)
 
 app.use(ErrorHandler)
 app.use(NotFoundHandler)
