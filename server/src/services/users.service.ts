@@ -1,67 +1,21 @@
 import { User } from "../models/user";
-import Bcrypt from 'bcrypt'
-import * as MongoDbConnector from "../db/mongoDbConnector";
+import { BaseService } from "./base.service";
+import * as Bcrypt from "bcrypt"
 
-export const findAll = async (): Promise<User[]> => {
-    const usersCol = await MongoDbConnector.getCollection('users')
-    const users = await usersCol.find({}).toArray()
+export class UserService extends BaseService<User> {
 
-    let userList: User[] = []
-    users.forEach(u => {
-        userList.push(mapToUser(u))
-    })
+    constructor() {
+        super('users')
+    }
 
-    return userList
-}
+    override async create(newUser: User): Promise<User> {
+        const collection = await this.mongoDbConnector.getCollection('users')
+        const salt = Bcrypt.genSaltSync(10)
+        const hash = await Bcrypt.hash(newUser.password, salt)
+        newUser.password = hash
 
-export const find = async (id: number): Promise<any> => {
-    const usersCol = await MongoDbConnector.getCollection('users')
-    const user = await usersCol.findOne({ id: id })
+        await collection.insertOne(newUser)
 
-    return mapToUser(user)
-}
-
-export const create = async (newUser: User): Promise<User> => {
-    const usersCol = await MongoDbConnector.getCollection('users')
-
-    const id = Date.now().valueOf()
-    const salt = Bcrypt.genSaltSync(10)
-    const hash = await Bcrypt.hash(newUser.password, salt)
-
-    newUser.password = hash
-    newUser.id = id
-
-    await usersCol.insertOne(newUser)
-
-    return newUser
-}
-
-export const update = async (id: number, userUpdate: User): Promise<User | null> => {
-    const usersCol = await MongoDbConnector.getCollection('users')
-    const user = await usersCol.findOne({ id: id })
-
-    if (!user) return null
-
-    await usersCol.updateOne({ id: id }, userUpdate)
-
-    return mapToUser(user)
-}
-
-export const remove = async (id: number): Promise<null | void> => {
-    const usersCol = await MongoDbConnector.getCollection('users')
-    const user = await usersCol.findOne({ id: id })
-
-    if (!user) return null
-
-    await usersCol.deleteOne({ id: id })
-}
-
-const mapToUser = (data: any): User => {
-    return {
-        id: data.id,
-        email: data.email,
-        password: data.password,
-        name: data.name,
-        token: data.token
+        return newUser
     }
 }

@@ -1,6 +1,16 @@
 curl -X POST -H 'Content-Type: application/json' -d '{
   "password": "sdhj",
-  "email": "asdasde@test.com",
-  "name": "test_user_update",
+  "email": "hahahahaha@test.com",
+  "name": "poggerzxd",
   "token": ""
 }' http://localhost:7000/api/users -i
+
+curl -X PUT -H 'Content-Type: application/json' -d '{
+  "password": "sdhj",
+  "email": "updated@test.com",
+  "name": "updated_user_name",
+  "token": "",
+  "id": 1679585638873
+}' http://localhost:7000/api/users/1679585638873 -i
+
+curl -X DELETE http://localhost:7000/api/users/1679585638873 -i
