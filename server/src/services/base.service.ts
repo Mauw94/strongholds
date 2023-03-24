@@ -54,16 +54,13 @@ export class BaseService<T> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne({ id: id })
 
-        console.log(item)
-
         if (!item) return null
 
         await collection.deleteOne({ id: id })
     }
 
     private mapToObject(data: any) {
-        const n = {}
-        const t = Object.assign(n, data)
-        return t
+        const obj = Object.assign({}, data)
+        return obj
     }
 }
