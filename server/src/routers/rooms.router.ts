@@ -30,7 +30,6 @@ roomsRouter.post('/', async (req: Request, res: Response) => {
 
 roomsRouter.post('/addUser', async (req: Request, res: Response) => {
     try {
-        console.log('adding user to room')
         const roomService = new RoomService()
         await roomService.addUser()
         res.status(200)
