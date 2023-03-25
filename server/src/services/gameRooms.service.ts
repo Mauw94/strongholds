@@ -23,11 +23,6 @@ export class GameRoomService extends BaseService<GameRoom> {
         }
     }
 
-    /**
-     * Gameroom got attacked
-     * @param id 
-     * @param damage 
-     */
     async attacked(id: number, damage: number): Promise<GameRoom> {
         const gameroom = await this.findById(id)
         gameroom.hitPoints -= damage
@@ -36,12 +31,6 @@ export class GameRoomService extends BaseService<GameRoom> {
         return gameroom
     }
 
-    /**
-     * Add income
-     * @param id 
-     * @param income 
-     * @returns 
-     */
     async addIncome(id: number, income: number): Promise<GameRoom> {
         const gameRoom = await this.findById(id)
         gameRoom.gold += income
@@ -50,12 +39,6 @@ export class GameRoomService extends BaseService<GameRoom> {
         return gameRoom
     }
 
-    /**
-     * Add multiple incomes add once (queued client-side)
-     * @param id 
-     * @param incomes 
-     * @returns 
-     */
     async addIncomes(id: number, incomes: number[]): Promise<GameRoom> {
         const gameRoom = await this.findById(id)
         const total = incomes.reduce((sum, current) => sum + current)
