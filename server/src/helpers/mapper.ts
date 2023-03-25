@@ -4,7 +4,7 @@ import { User } from "../models/user";
 export class Mapper {
 
     static mapToUser(data: any): User {
-        return { name: data.name, password: data.password, id: data.id, email: data.email, token: data.token }
+        return { name: data.name, password: data.password, id: data.id, email: data.email, token: data.token, salt: data.salt }
     }
 
     static mapToGameroom(data: any): GameRoom {

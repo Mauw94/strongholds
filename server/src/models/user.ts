@@ -4,6 +4,7 @@ export interface User {
     email: string
     name: string
     token: string
+    salt: string
 }
 
 export interface Users {
