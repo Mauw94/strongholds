@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import { User } from '../models/user'
 import { UserService } from '../services/users.service'
+import { Helper } from '../helpers/helper'
 
 export const usersRouter = express.Router()
 
@@ -12,7 +13,7 @@ usersRouter.get('/', async (req: Request, res: Response) => {
         res.status(200).send(users)
     }
     catch (e: any) {
-        res.status(500).send(e.message)
+        return Helper.internalServerError(res, e)
     }
 })
 
@@ -28,7 +29,7 @@ usersRouter.get('/:id', async (req: Request, res: Response) => {
 
         res.status(400).send('user not found')
     } catch (e: any) {
-        res.status(500).send(e.message)
+        return Helper.internalServerError(res, e)
     }
 })
 
@@ -41,7 +42,7 @@ usersRouter.post('/', async (req: Request, res: Response) => {
 
         res.status(201).json(newUser)
     } catch (e: any) {
-        res.status(500).send(e.message)
+        return Helper.internalServerError(res, e)
     }
 })
 
@@ -62,7 +63,7 @@ usersRouter.put('/:id', async (req: Request, res: Response) => {
 
         res.status(201).json(newUser)
     } catch (e: any) {
-        res.status(500).send(e.message)
+        return Helper.internalServerError(res, e)
     }
 })
 
@@ -74,6 +75,6 @@ usersRouter.delete('/:id', async (req: Request, res: Response) => {
 
         res.sendStatus(204)
     } catch (e: any) {
-        res.status(500).send(e.message)
+        return Helper.internalServerError(res, e)
     }
 })
