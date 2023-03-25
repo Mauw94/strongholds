@@ -8,6 +8,6 @@ export class Mapper {
     }
 
     static mapToGameroom(data: any): GameRoom {
-        return { id: data.id, name: data.name, users: data.users }
+        return { id: data.id, name: data.name, users: data.users, hitPoints: data.hitPoints, gold: data.gold }
     }
 }
