@@ -10,9 +10,9 @@ roomsRouter.get('/', async (req: Request, res: Response) => {
         const gameroomService = new GameRoomService()
         const rooms: GameRoom[] = await gameroomService.findAll()
 
-        res.status(200).send(rooms)
+        Helper.okJsonStatusCode(res, rooms)
     } catch (e: any) {
-        return Helper.internalServerError(res, e)
+        Helper.internalServerError(res, e)
     }
 })
 
@@ -22,9 +22,12 @@ roomsRouter.get('/:id', async (req: Request, res: Response) => {
         const id = parseInt(req.params.id, 10)
         const gameroom = await gameroomService.findById(id)
 
-        res.status(200).json(gameroom)
+        if (gameroom)
+            return Helper.okJsonStatusCode(res, gameroom)
+
+        Helper.notFoundStatusCode(res, "gameroom not found")
     } catch (e: any) {
-        return Helper.internalServerError(res, e)
+        Helper.internalServerError(res, e)
     }
 })
 
@@ -37,9 +40,9 @@ roomsRouter.post('/', async (req: Request, res: Response) => {
         const gameroomService = new GameRoomService()
         const newRoom: GameRoom = await gameroomService.create(room)
 
-        res.status(201).json(newRoom)
+        Helper.createdJsonStatusCode(res, newRoom)
     } catch (e: any) {
-        return Helper.internalServerError(res, e)
+        Helper.internalServerError(res, e)
     }
 })
 
@@ -47,7 +50,7 @@ roomsRouter.post('/attacked', async (req: Request, res: Response) => {
     try {
 
     } catch (e: any) {
-        return Helper.internalServerError(res, e)
+        Helper.internalServerError(res, e)
     }
 })
 
@@ -55,8 +58,9 @@ roomsRouter.post('/addUser', async (req: Request, res: Response) => {
     try {
         const gameroomService = new GameRoomService()
         await gameroomService.addUser()
-        res.status(200).sendStatus(200)
+
+        Helper.okStatusCode(res)
     } catch (e: any) {
-        return Helper.internalServerError(res, e)
+        Helper.internalServerError(res, e)
     }
 })
