@@ -10,4 +10,9 @@ export class Mapper {
     static mapToGameroom(data: any): GameRoom {
         return { id: data.id, name: data.name, users: data.users, hitPoints: data.hitPoints, gold: data.gold }
     }
+
+    static mapToObject(data: any) {
+        const obj = Object.assign({}, data)
+        return obj // returns object and will auto parse to correct T object
+    }
 }

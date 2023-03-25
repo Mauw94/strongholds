@@ -1,4 +1,5 @@
 import { MongoDbConnector } from "../db/mongoDbConnector"
+import { Mapper } from "../helpers/mapper"
 
 export class BaseService<T> {
 
@@ -16,7 +17,7 @@ export class BaseService<T> {
 
         const returnList: T[] = []
         collectionResult.forEach(c => {
-            returnList.push(this.mapToObject(c))
+            returnList.push(Mapper.mapToObject(c))
         })
 
         return returnList
@@ -26,14 +27,14 @@ export class BaseService<T> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne({ id: id })
 
-        return this.mapToObject(item)
+        return Mapper.mapToObject(item)
     }
 
     async findWithFilter(filter: any): Promise<T> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne(filter)
 
-        return this.mapToObject(item)
+        return Mapper.mapToObject(item)
     }
 
     async create(newItem: T): Promise<T> {
@@ -54,7 +55,7 @@ export class BaseService<T> {
         const updatedItem = Object.assign({}, itemUpdate)
         await collection.updateOne({ id: id }, { $set: updatedItem })
 
-        return this.mapToObject(updatedItem)
+        return Mapper.mapToObject(updatedItem)
     }
 
     async remove(id: number): Promise<null | void> {
@@ -64,10 +65,5 @@ export class BaseService<T> {
         if (!item) return null
 
         await collection.deleteOne({ id: id })
-    }
-
-    private mapToObject(data: any) {
-        const obj = Object.assign({}, data)
-        return obj
     }
 }
