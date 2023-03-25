@@ -21,7 +21,7 @@ usersRouter.get('/:id', async (req: Request, res: Response) => {
 
     try {
         const userService = new UserService()
-        const user: User = await userService.find(id)
+        const user: User = await userService.findById(id)
 
         if (user)
             return res.status(200).send(user)
@@ -51,7 +51,7 @@ usersRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const userUpdate: User = req.body
         const userService = new UserService()
-        const existingUser: User = await userService.find(id)
+        const existingUser: User = await userService.findById(id)
 
         if (existingUser) {
             const updatedUser = await userService.update(id, userUpdate)

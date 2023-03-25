@@ -22,9 +22,16 @@ export class BaseService<T> {
         return returnList
     }
 
-    async find(id: number): Promise<T> {
+    async findById(id: number): Promise<T> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne({ id: id })
+
+        return this.mapToObject(item)
+    }
+
+    async findWithFilter(filter: any): Promise<T> {
+        const collection = await this.mongoDbConnector.getCollection(this.collection)
+        const item = await collection.findOne(filter)
 
         return this.mapToObject(item)
     }

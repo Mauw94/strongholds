@@ -11,7 +11,7 @@ export class RoomService extends BaseService<Room> {
     async addUser() {
         const usersCollection = await this.mongoDbConnector.getCollection('users')
         const user = await usersCollection.findOne({ id: 1679586615381 })
-        const room = await this.find(1679587198072)
+        const room = await this.findById(1679587198072)
         room.users.push(this.userObj(user))
         await this.update(room.id, room)
     }
