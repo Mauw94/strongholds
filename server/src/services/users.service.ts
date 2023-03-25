@@ -12,7 +12,9 @@ export class UserService extends BaseService<User> {
         const collection = await this.mongoDbConnector.getCollection('users')
         const salt = Bcrypt.genSaltSync(10)
         const hash = await Bcrypt.hash(newUser.password, salt)
+
         newUser.password = hash
+        newUser.salt = salt
 
         await collection.insertOne(newUser)
 
