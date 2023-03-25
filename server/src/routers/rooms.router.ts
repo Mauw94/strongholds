@@ -1,13 +1,13 @@
 import express, { Request, Response } from "express";
-import { Room } from "../models/room";
-import { RoomService } from "../services/rooms.service";
+import { GameRoom } from "../models/gameRoom";
+import { GameRoomService } from "../services/gameRooms.service";
 
 export const roomsRouter = express.Router()
 
 roomsRouter.get('/', async (req: Request, res: Response) => {
     try {
-        const roomService = new RoomService()
-        const rooms: Room[] = await roomService.findAll()
+        const gameroomService = new GameRoomService()
+        const rooms: GameRoom[] = await gameroomService.findAll()
 
         res.status(200).send(rooms)
     } catch (e: any) {
@@ -15,12 +15,24 @@ roomsRouter.get('/', async (req: Request, res: Response) => {
     }
 })
 
+roomsRouter.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const gameroomService = new GameRoomService()
+        const id = parseInt(req.params.id, 10)
+        const gameroom = await gameroomService.findById(id)
+
+        res.status(200).json(gameroom)
+    } catch (e: any) {
+        res.status(500).send(e.message)
+    }
+})
+
 roomsRouter.post('/', async (req: Request, res: Response) => {
     try {
-        const room: Room = req.body
+        const room: GameRoom = req.body
         room.id = Date.now().valueOf()
-        const roomService = new RoomService()
-        const newRoom: Room = await roomService.create(room)
+        const gameroomService = new GameRoomService()
+        const newRoom: GameRoom = await gameroomService.create(room)
 
         res.status(201).json(newRoom)
     } catch (e: any) {
@@ -30,9 +42,9 @@ roomsRouter.post('/', async (req: Request, res: Response) => {
 
 roomsRouter.post('/addUser', async (req: Request, res: Response) => {
     try {
-        const roomService = new RoomService()
-        await roomService.addUser()
-        res.status(200)
+        const gameroomService = new GameRoomService()
+        await gameroomService.addUser()
+        res.status(200).sendStatus(200)
     } catch (e: any) {
         res.status(500).send(e.message)
     }

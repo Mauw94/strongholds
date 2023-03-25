@@ -1,6 +1,6 @@
 import { User } from "./user"
 
-export interface Room {
+export interface GameRoom {
     id: number
     name: string
     users: User[]
