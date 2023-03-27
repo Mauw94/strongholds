@@ -1,4 +1,3 @@
-export enum Event {
+export enum EventType {
     PLAYER_ATTACK_STRONGHOLD = 0,
-    ELSE = 1
 }

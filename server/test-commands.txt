@@ -22,3 +22,10 @@ curl -X POST -H 'Content-Type: application/json' -d '{
 }' http://localhost:7000/api/strongholds -i
 
 curl -X POST http://localhost:7000/api/strongholds/addUser -i
+
+curl -X POST -H 'Content-Type: application/json' -d '{
+  "event": 0,
+  "playerId": 1679586615381,
+  "strongholdId": 1679917653961,
+  "description": "test"
+}' http://localhost:7000/api/events -i

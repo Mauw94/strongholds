@@ -7,6 +7,7 @@ import { usersRouter } from './routers/users.router'
 import { ErrorHandler } from "./middleware/error.middleware"
 import { NotFoundHandler } from "./middleware/not-found.middleware"
 import { strongholdsRouter } from "./routers/strongholds.router"
+import { eventTrackingRouter } from "./routers/event-tracking.router"
 
 let port: number = 0
 const app = express()
@@ -25,6 +26,7 @@ app.use(cors())
 app.use(express.json())
 app.use('/api/users', usersRouter)
 app.use('/api/strongholds', strongholdsRouter)
+app.use('/api/events', eventTrackingRouter)
 
 app.use(ErrorHandler)
 app.use(NotFoundHandler)

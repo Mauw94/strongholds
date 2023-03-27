@@ -8,7 +8,7 @@ export class UserService extends BaseService<User> {
         super('users')
     }
 
-    override async create(newUser: User): Promise<User> {
+    override async createAsync(newUser: User): Promise<User> {
         const collection = await this.mongoDbConnector.getCollection('users')
         const salt = Bcrypt.genSaltSync(10)
         const hash = await Bcrypt.hash(newUser.password, salt)

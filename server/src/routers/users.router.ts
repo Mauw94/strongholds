@@ -8,7 +8,7 @@ export const usersRouter = express.Router()
 usersRouter.get('/', async (req: Request, res: Response) => {
     try {
         const userService = new UserService()
-        const users: User[] = await userService.findAll()
+        const users: User[] = await userService.findAllAsync()
 
         Helper.okJsonStatusCode(res, users)
     }
@@ -22,7 +22,7 @@ usersRouter.get('/:id', async (req: Request, res: Response) => {
 
     try {
         const userService = new UserService()
-        const user: User = await userService.findById(id)
+        const user: User = await userService.findByIdAsync(id)
 
         if (user)
             return Helper.okJsonStatusCode(res, user)
@@ -38,7 +38,7 @@ usersRouter.post('/', async (req: Request, res: Response) => {
         const user: User = req.body
         user.id = Date.now().valueOf()
         const userService = new UserService()
-        const newUser: User = await userService.create(user)
+        const newUser: User = await userService.createAsync(user)
 
         Helper.createdJsonStatusCode(res, newUser)
     } catch (e: any) {
@@ -52,14 +52,14 @@ usersRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const userUpdate: User = req.body
         const userService = new UserService()
-        const existingUser: User = await userService.findById(id)
+        const existingUser: User = await userService.findByIdAsync(id)
 
         if (existingUser) {
-            const updatedUser = await userService.update(id, userUpdate)
+            const updatedUser = await userService.updateAsync(id, userUpdate)
             return res.status(200).json(updatedUser)
         }
 
-        const newUser: User = await userService.create(userUpdate)
+        const newUser: User = await userService.createAsync(userUpdate)
         
         Helper.createdJsonStatusCode(res, newUser)
     } catch (e: any) {
@@ -71,7 +71,7 @@ usersRouter.delete('/:id', async (req: Request, res: Response) => {
     try {
         const userService = new UserService()
         const id: number = parseInt(req.params.id, 10)
-        await userService.remove(id)
+        await userService.removeAsync(id)
 
         Helper.noContentStatusCode(res)
     } catch (e: any) {
