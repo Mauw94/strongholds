@@ -7,7 +7,7 @@ export class Mapper {
         return { name: data.name, password: data.password, id: data.id, email: data.email, token: data.token, salt: data.salt }
     }
 
-    static mapToGameroom(data: any): Stronghold {
+    static mapToStronghold(data: any): Stronghold {
         return { id: data.id, name: data.name, users: data.users, hitPoints: data.hitPoints, gold: data.gold }
     }
 

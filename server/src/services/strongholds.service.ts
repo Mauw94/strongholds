@@ -5,7 +5,7 @@ import { BaseService } from "./base.service";
 export class StrongholdService extends BaseService<Stronghold> {
 
     constructor() {
-        super('rooms')
+        super('strongholds')
     }
 
     /**
