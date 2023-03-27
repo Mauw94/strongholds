@@ -19,6 +19,6 @@ curl -X DELETE http://localhost:7000/api/users/1679585638873 -i
 curl -X POST -H 'Content-Type: application/json' -d '{
   "name": "room1",
   "users": []
-}' http://localhost:7000/api/rooms -i
+}' http://localhost:7000/api/strongholds -i
 
-curl -X POST http://localhost:7000/api/rooms/addUser -i
+curl -X POST http://localhost:7000/api/strongholds/addUser -i

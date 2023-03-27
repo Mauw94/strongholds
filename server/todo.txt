@@ -1,8 +1,5 @@
-create strongholds (rooms that players can join/team up)
 players can attack another stronghold (turn based)
 save stronghold state in db
-
-
 
 make holds (rooms) that users can join
 fight other holds

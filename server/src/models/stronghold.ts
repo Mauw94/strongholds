@@ -1,6 +1,6 @@
 import { User } from "./user"
 
-export interface GameRoom {
+export interface Stronghold {
     id: number
     name: string
     hitPoints: number
