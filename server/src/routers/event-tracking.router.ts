@@ -9,6 +9,19 @@ eventTrackingRouter.get('/', async (req: Request, res: Response) => {
 
 })
 
+eventTrackingRouter.get('/:eventtype', async (req: Request, res: Response) => {
+    try {
+        const eventTrackingService = new EventTrackingService()
+        const eventType = parseInt(req.params.eventtype, 10)
+        const filter = { event: eventType }
+        const events = await eventTrackingService.findAllWithFilterAsync(filter)
+
+        Helper.okJsonStatusCode(res, events)
+    } catch (e: any) {
+        Helper.internalServerError(res, e.message)
+    }
+})
+
 eventTrackingRouter.post('/', async (req: Request, res: Response) => {
     try {
         const eventTrackingService = new EventTrackingService()

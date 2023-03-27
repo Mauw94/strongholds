@@ -27,5 +27,5 @@ curl -X POST -H 'Content-Type: application/json' -d '{
   "event": 0,
   "playerId": 1679586615381,
   "strongholdId": 1679917653961,
-  "description": "test"
+  "description": "test2"
 }' http://localhost:7000/api/events -i

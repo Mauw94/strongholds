@@ -30,11 +30,23 @@ export class BaseService<T> {
         return Mapper.mapToObject(item)
     }
 
-    async findWithFilterAsync(filter: any): Promise<T> {
+    async findOneWithFilterAsync(filter: any): Promise<T> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne(filter)
 
         return Mapper.mapToObject(item)
+    }
+
+    async findAllWithFilterAsync(filter: any): Promise<T[]> {
+        const collection = await this.mongoDbConnector.getCollection(this.collection)
+        const items = await collection.find(filter).toArray()
+
+        const returnList: T[] = []
+        items.forEach(i => {
+            returnList.push(Mapper.mapToObject(i))
+        })
+
+        return returnList
     }
 
     async createAsync(newItem: T): Promise<T> {
