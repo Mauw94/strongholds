@@ -2,7 +2,7 @@ import { Response } from "express";
 
 export class Helper {
 
-    static NoContentStatusCode(res: Response): Response<string, Record<string, any>> {
+    static noContentStatusCode(res: Response): Response<string, Record<string, any>> {
         return res.status(204)
     }
 
