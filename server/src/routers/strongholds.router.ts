@@ -8,7 +8,7 @@ export const strongholdsRouter = express.Router()
 strongholdsRouter.get('/', async (req: Request, res: Response) => {
     try {
         const strongholdService = new StrongholdService()
-        const strongholds: Stronghold[] = await strongholdService.findAll()
+        const strongholds: Stronghold[] = await strongholdService.findAllAsync()
 
         Helper.okJsonStatusCode(res, strongholds)
     } catch (e: any) {
@@ -20,7 +20,7 @@ strongholdsRouter.get('/:id', async (req: Request, res: Response) => {
     try {
         const strongholdService = new StrongholdService()
         const id = parseInt(req.params.id, 10)
-        const stronghold = await strongholdService.findById(id)
+        const stronghold = await strongholdService.findByIdAsync(id)
 
         if (stronghold)
             return Helper.okJsonStatusCode(res, stronghold)
@@ -38,7 +38,7 @@ strongholdsRouter.post('/', async (req: Request, res: Response) => {
         stronghold.hitPoints = 100
         stronghold.gold = 50
         const strongholdService = new StrongholdService()
-        const newStronghold: Stronghold = await strongholdService.create(stronghold)
+        const newStronghold: Stronghold = await strongholdService.createAsync(stronghold)
 
         Helper.createdJsonStatusCode(res, newStronghold)
     } catch (e: any) {

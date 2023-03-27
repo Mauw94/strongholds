@@ -11,7 +11,7 @@ export class BaseService<T> {
         this.mongoDbConnector = new MongoDbConnector()
     }
 
-    async findAll(): Promise<T[]> {
+    async findAllAsync(): Promise<T[]> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const collectionResult = await collection.find({}).toArray()
 
@@ -23,21 +23,21 @@ export class BaseService<T> {
         return returnList
     }
 
-    async findById(id: number): Promise<T> {
+    async findByIdAsync(id: number): Promise<T> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne({ id: id })
 
         return Mapper.mapToObject(item)
     }
 
-    async findWithFilter(filter: any): Promise<T> {
+    async findWithFilterAsync(filter: any): Promise<T> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne(filter)
 
         return Mapper.mapToObject(item)
     }
 
-    async create(newItem: T): Promise<T> {
+    async createAsync(newItem: T): Promise<T> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
 
         const item = Object.assign({}, newItem)
@@ -46,7 +46,7 @@ export class BaseService<T> {
         return item
     }
 
-    async update(id: number, itemUpdate: T): Promise<T | null> {
+    async updateAsync(id: number, itemUpdate: T): Promise<T | null> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne({ id: id })
 
@@ -58,7 +58,7 @@ export class BaseService<T> {
         return Mapper.mapToObject(updatedItem)
     }
 
-    async remove(id: number): Promise<null | void> {
+    async removeAsync(id: number): Promise<null | void> {
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne({ id: id })
 
