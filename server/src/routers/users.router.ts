@@ -60,7 +60,7 @@ usersRouter.put('/:id', async (req: Request, res: Response) => {
         }
 
         const newUser: User = await userService.create(userUpdate)
-
+        
         Helper.createdJsonStatusCode(res, newUser)
     } catch (e: any) {
         Helper.internalServerError(res, e)
@@ -73,7 +73,7 @@ usersRouter.delete('/:id', async (req: Request, res: Response) => {
         const id: number = parseInt(req.params.id, 10)
         await userService.remove(id)
 
-        Helper.NoContentStatusCode(res)
+        Helper.noContentStatusCode(res)
     } catch (e: any) {
         Helper.internalServerError(res, e)
     }
