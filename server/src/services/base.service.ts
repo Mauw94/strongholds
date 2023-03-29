@@ -8,11 +8,15 @@ export class BaseService<T extends CacheableEntity> {
     public mongoDbConnector: MongoDbConnector
     private collection: string
     private caching: DbLocalCache
+    private cacheTTL: number
 
     constructor(collection: string) {
         this.collection = collection
         this.mongoDbConnector = new MongoDbConnector()
         this.caching = DbLocalCache.getInstance()
+
+        const cacheTTL = parseInt(process.env.CACHETTL_IN_MIN as string, 10)
+        this.cacheTTL = (cacheTTL * 60 * 1000)
     }
 
     async findAllAsync(): Promise<T[]> {
@@ -27,7 +31,7 @@ export class BaseService<T extends CacheableEntity> {
             returnList.push(Mapper.mapToObject(c))
         })
 
-        this.caching.cacheItems(returnList, (2 * 60 * 1000))
+        this.caching.cacheItems(returnList, this.cacheTTL)
 
         return returnList
     }
