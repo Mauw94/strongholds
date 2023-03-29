@@ -1,3 +1,7 @@
+user caching of data
+is there a way to check if the collection has changed (mongodb)?
+use hasing on the collection to check if it changed?
+
 players can attack another stronghold (turn based)
 save stronghold state in db
 

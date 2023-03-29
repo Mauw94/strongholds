@@ -1,3 +1,4 @@
+import { error } from "console";
 import { Mapper } from "../helpers/mapper";
 import { Stronghold } from "../models/stronghold";
 import { BaseService } from "./base.service";
@@ -8,14 +9,13 @@ export class StrongholdService extends BaseService<Stronghold> {
         super('strongholds')
     }
 
-    /**
-     * Test method for adding a user
-     */
     async addUser(): Promise<void> {
         const usersCollection = await this.mongoDbConnector.getCollection('users')
         const userData = await usersCollection.findOne({ id: 1679586615381 })
         const user = Mapper.mapToUser(userData)
         const stronghold = await this.findByIdAsync(1679587198072)
+
+        if (stronghold.users.length === 5) throw error("can not add more users")
 
         if (!stronghold.users.find(x => x.id === user.id)) {
             stronghold.users.push(user)

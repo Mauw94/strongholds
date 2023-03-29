@@ -1,3 +1,4 @@
+import { DbLocalCache } from "../caching/db-local-cache"
 import { MongoDbConnector } from "../db/mongoDbConnector"
 import { Mapper } from "../helpers/mapper"
 
@@ -5,13 +6,18 @@ export class BaseService<T> {
 
     public mongoDbConnector: MongoDbConnector
     private collection: string
+    private caching: DbLocalCache<T>
 
     constructor(collection: string) {
         this.collection = collection
         this.mongoDbConnector = new MongoDbConnector()
+        this.caching = DbLocalCache.getInstance()
     }
 
     async findAllAsync(): Promise<T[]> {
+        const [items, validCache] = this.caching.getCachedItems()
+        if (validCache) return items;
+
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const collectionResult = await collection.find({}).toArray()
 
@@ -19,6 +25,8 @@ export class BaseService<T> {
         collectionResult.forEach(c => {
             returnList.push(Mapper.mapToObject(c))
         })
+
+        this.caching.cacheItems(returnList, (2 * 60 * 1000))
 
         return returnList
     }
@@ -55,6 +63,8 @@ export class BaseService<T> {
         const item = Object.assign({}, newItem)
         await collection.insertOne(item)
 
+        this.caching.resetCache()
+
         return item
     }
 
@@ -66,6 +76,8 @@ export class BaseService<T> {
 
         const updatedItem = Object.assign({}, itemUpdate)
         await collection.updateOne({ id: id }, { $set: updatedItem })
+
+        this.caching.resetCache()
 
         return Mapper.mapToObject(updatedItem)
     }
