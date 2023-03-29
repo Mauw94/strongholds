@@ -1,7 +1,9 @@
-export class DbLocalCache<T> {
+import { CacheableEntity } from "../models/cacheable-entity"
 
-    private static instance: DbLocalCache<any>
-    private cache: T[] = []
+export class DbLocalCache {
+
+    private static instance: DbLocalCache
+    private cache: CacheableEntity[] = []
     private cachedAt: number = Number.MIN_VALUE
     private expirationTime: number = Number.MIN_VALUE
 
@@ -10,17 +12,17 @@ export class DbLocalCache<T> {
     static getInstance() {
         if (DbLocalCache.instance) return this.instance
 
-        this.instance = new DbLocalCache<any>()
+        this.instance = new DbLocalCache()
         return this.instance
     }
 
-    cacheItems(items: T[], expirationTime: number) {
+    cacheItems(items: CacheableEntity[], expirationTime: number) {
         this.expirationTime = expirationTime
         this.cachedAt = Date.now()
         this.cache = items
     }
 
-    getCachedItems(): [T[], boolean] {
+    getCache(): [CacheableEntity[], boolean] {
         const time = Date.now()
         let validCache: boolean = true
 

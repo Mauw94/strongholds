@@ -1,12 +1,13 @@
 import { DbLocalCache } from "../caching/db-local-cache"
 import { MongoDbConnector } from "../db/mongoDbConnector"
 import { Mapper } from "../helpers/mapper"
+import { CacheableEntity } from "../models/cacheable-entity"
 
-export class BaseService<T> {
+export class BaseService<T extends CacheableEntity> {
 
     public mongoDbConnector: MongoDbConnector
     private collection: string
-    private caching: DbLocalCache<T>
+    private caching: DbLocalCache
 
     constructor(collection: string) {
         this.collection = collection
@@ -15,8 +16,8 @@ export class BaseService<T> {
     }
 
     async findAllAsync(): Promise<T[]> {
-        const [items, validCache] = this.caching.getCachedItems()
-        if (validCache) return items;
+        const [items, validCache] = this.caching.getCache()
+        if (validCache) return items as T[];
 
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const collectionResult = await collection.find({}).toArray()
@@ -32,6 +33,9 @@ export class BaseService<T> {
     }
 
     async findByIdAsync(id: number): Promise<T> {
+        const [items, validCache] = this.caching.getCache()
+        if (validCache) return items.find(i => i.id === id) as T;
+
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne({ id: id })
 
