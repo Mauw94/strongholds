@@ -1,5 +1,6 @@
-export interface User {
-    id: number
+import { CacheableEntity } from "./cacheable-entity"
+
+export interface User extends CacheableEntity {
     password: string
     email: string
     name: string

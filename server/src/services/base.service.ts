@@ -21,7 +21,7 @@ export class BaseService<T extends CacheableEntity> {
 
     async findAllAsync(): Promise<T[]> {
         const [items, validCache] = this.caching.getCache()
-        if (validCache) return items as T[];
+        if (validCache) return items as T[]
 
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const collectionResult = await collection.find({}).toArray()
@@ -38,7 +38,7 @@ export class BaseService<T extends CacheableEntity> {
 
     async findByIdAsync(id: number): Promise<T> {
         const [items, validCache] = this.caching.getCache()
-        if (validCache) return items.find(i => i.id === id) as T;
+        if (validCache) return items.find(i => i.id === id) as T
 
         const collection = await this.mongoDbConnector.getCollection(this.collection)
         const item = await collection.findOne({ id: id })
