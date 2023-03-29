@@ -9,6 +9,7 @@ export class DbLocalCache {
 
     private constructor() { }
 
+    // DbLocalCache is a singleton
     static getInstance() {
         if (DbLocalCache.instance) return this.instance
 
@@ -16,12 +17,14 @@ export class DbLocalCache {
         return this.instance
     }
 
+    // cache a new set of items with an expiration time
     cacheItems(items: CacheableEntity[], expirationTime: number) {
         this.expirationTime = expirationTime
         this.cachedAt = Date.now()
         this.cache = items
     }
 
+    // get the items and check wether they're expired or not
     getCache(): [CacheableEntity[], boolean] {
         const time = Date.now()
         let validCache: boolean = true
@@ -32,6 +35,7 @@ export class DbLocalCache {
         return [this.cache, validCache]
     }
 
+    // "expire" the cached items
     resetCache(): void {
         this.expirationTime = Number.MIN_VALUE
         this.cache = []
