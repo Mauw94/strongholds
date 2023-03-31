@@ -6,7 +6,29 @@ import { Event } from "../models/event";
 export const eventTrackingRouter = express.Router()
 
 eventTrackingRouter.get('/', async (req: Request, res: Response) => {
+    try {
+        const eventTrackingService = new EventTrackingService()
+        const events = await eventTrackingService.findAllAsync()
 
+        Helper.okJsonStatusCode(res, events)
+    } catch (e: any) {
+        Helper.internalServerError(res, e.message)
+    }
+})
+
+eventTrackingRouter.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const eventTrackingService = new EventTrackingService()
+        const id = parseInt(req.params.id, 10)
+        const event = await eventTrackingService.findByIdAsync(id)
+
+        if (event)
+            Helper.okJsonStatusCode(res, event)
+
+        Helper.notFoundStatusCode(res, "didn't find an event")
+    } catch (e: any) {
+        Helper.internalServerError(res, e.message)
+    }
 })
 
 eventTrackingRouter.get('/:eventtype', async (req: Request, res: Response) => {
