@@ -23,7 +23,7 @@ eventTrackingRouter.get('/:id', async (req: Request, res: Response) => {
         const event = await eventTrackingService.findByIdAsync(id)
 
         if (event)
-            Helper.okJsonStatusCode(res, event)
+            return Helper.okJsonStatusCode(res, event)
 
         Helper.notFoundStatusCode(res, "didn't find an event")
     } catch (e: any) {

@@ -48,9 +48,15 @@ strongholdsRouter.post('/', async (req: Request, res: Response) => {
 
 strongholdsRouter.post('/attacked', async (req: Request, res: Response) => {
     try {
-        // todo: update stronghold
-        // update attack history
+        const strongholdService = new StrongholdService()
+        const attackEvent = req.body
 
+        const stronghold = await strongholdService.attacked(attackEvent.id, attackEvent.damage)
+
+        if (stronghold)
+            return Helper.okJsonStatusCode(res, stronghold)
+
+        Helper.notFoundStatusCode(res, "didn't find stronghold")
     } catch (e: any) {
         Helper.internalServerError(res, e)
     }
