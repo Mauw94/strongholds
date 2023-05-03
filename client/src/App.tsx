@@ -22,6 +22,16 @@ function App() {
         loadStrongholds()
     }, [])
 
+    const getStrongholdsContent = (strongholds: any) => {
+        let content = []
+        for (let idx in strongholds) {
+            const item = strongholds[idx]
+            content.push(<li key={item.id}>{item.name}</li>)
+        }
+
+        return content
+    }
+
     return (
         <div>
             {loading && (
@@ -30,6 +40,9 @@ function App() {
                     <p>Loading...</p>
                 </div>
             )}
+            <ul>
+                {getStrongholdsContent(strongholds)}
+            </ul>
             <blockquote cite="Benjamin Franklin">
                 Tell me and I forget, teach me and I may remember, involve me and I learn.
             </blockquote>

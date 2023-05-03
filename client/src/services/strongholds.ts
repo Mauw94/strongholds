@@ -32,9 +32,7 @@ const strongholdsAPI = {
     get() {
         return fetch(url)
             .then(checkStatus)
-            .then(data => {
-                console.log(data)
-            })
+            .then(res => res.json())
     }
 }
 
